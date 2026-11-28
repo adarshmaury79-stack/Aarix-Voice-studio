@@ -11,7 +11,7 @@
   --line:#e7e7ea;--line2:#d6d6dc;--soft:#f3f3f5;--pri:#0b0b0c;--pfg:#ffffff;
   --tag:#7c3aed;--tagbg:#f3edff;--danger:#dc2626;--ok:#16a34a;
   --sh:0 1px 2px rgba(16,16,20,.05),0 4px 14px rgba(16,16,20,.05);--sh2:0 12px 40px rgba(16,16,20,.16);
-  --ed:17px;
+  --ed:18px;
 }
 [data-theme=dark]{
   --bg:#0c0c0e;--bg2:#111114;--card:#16161a;--ink:#f4f4f5;--ink2:#d4d4d8;--muted:#9b9ba4;
@@ -33,7 +33,8 @@ svg{display:block}
 button,a.btn,.vrow{transition:transform .14s cubic-bezier(.2,.8,.2,1),background-color .15s,box-shadow .15s,opacity .15s,color .15s,border-color .15s}
 button:active:not(:disabled),a.btn:active{transform:scale(.96)}
 .srow:active,.mi:active,.popt:active,.vrow:active,.voicebtn:active,.addchar:active,.mcards button:active{transform:scale(.985)}
-
+.rip{position:absolute;border-radius:50%;background:currentColor;opacity:.16;transform:scale(0);animation:rip .55s cubic-bezier(.2,.8,.2,1) forwards;pointer-events:none}
+@keyframes rip{to{transform:scale(1);opacity:0}}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line2);background:var(--card);color:var(--ink);font-weight:600;font-size:14px;transition:background .15s,transform .1s,opacity .15s;white-space:nowrap}
 .btn:hover{background:var(--soft)}
 .btn.pri{background:var(--pri);color:var(--pfg);border-color:var(--pri)}
@@ -92,6 +93,15 @@ select.input{appearance:none;background-image:linear-gradient(45deg,transparent 
 .lbox{position:relative;z-index:1}
 #login.on .lbox>.logo{animation:logoIn .8s cubic-bezier(.2,1.3,.3,1) both}
 @keyframes logoIn{from{opacity:0;transform:scale(.4) rotate(-14deg)}to{opacity:1;transform:none}}
+#login.on .lbox>*:not(.logo){animation:lin .6s cubic-bezier(.2,.8,.2,1) both}
+#login.on .lbox>.lwave{animation-delay:.25s}
+#login.on .lbox>h1{animation-delay:.38s}
+#login.on .lbox>p{animation-delay:.48s}
+#login.on .lbox>#stepA{animation-delay:.58s}
+#login.on .lbox>.lnote{animation-delay:.72s}
+@keyframes lin{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+#login.on .lwave i{animation:lw 1.2s ease-in-out infinite,barIn .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes barIn{from{transform:scaleY(0)}}
 
 #topbar{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;height:calc(58px + env(safe-area-inset-top));padding:env(safe-area-inset-top) max(14px,env(safe-area-inset-right)) 0 max(10px,env(safe-area-inset-left));background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(1.6) blur(14px);-webkit-backdrop-filter:saturate(1.6) blur(14px);border-bottom:1px solid var(--line)}
 #topbar .l{display:flex;align-items:center;gap:6px;min-width:0}
@@ -109,22 +119,28 @@ body:not([data-screen=about]) #speechBtn{display:none}
 .menu{position:fixed;top:calc(64px + env(safe-area-inset-top));right:12px;width:min(280px,calc(100% - 24px));background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px;z-index:40;box-shadow:var(--sh2);display:none;transform-origin:top right}
 .menu.show{display:block;animation:pop .16s ease both}
 @keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.menu .who{display:flex;gap:12px;align-items:center;padding:10px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.menu .who .avbtn{width:40px;height:40px;box-shadow:none}
+.menu .who b{display:block;font-size:14px}
 .mi{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;padding:10px;border-radius:10px;text-align:left;font-size:14px;color:var(--ink)}
 .mi:hover{background:var(--soft)}
 .mi .ic{width:20px;color:var(--muted);flex:none;display:grid;place-items:center}
 .mi .grow{flex:1;min-width:0}
+.mi .end{color:var(--muted);font-size:12px}
 .sw{width:40px;height:24px;border-radius:20px;background:var(--line2);position:relative;transition:.2s;flex:none}
 .sw:after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px #0003}
 .sw.on{background:var(--ink)}.sw.on:after{left:19px;background:var(--pfg)}
 
 /* =========================================================
-   STUDIO — Exact Match to Screenshot & Unlimited
+   STUDIO (Screenshot exact match & Unlimited credits)
    ========================================================= */
 #studio .page{padding:16px 16px 260px;max-width:720px;margin:0 auto}
-body.hasres #studio .page{padding-bottom:430px}
+body.kb .bottombar{display:none}
+body.kb #studio .page{padding-bottom:40px}
+body.hasres #studio .page{padding-bottom:400px}
 
 /* Voice Pill */
-.voicebtn{display:inline-flex;width:auto;max-width:100%;min-width:0;height:auto;padding:7px 14px 7px 7px;gap:9px;border:1px solid var(--line);border-radius:999px;background:var(--card);margin:0 0 20px;box-shadow:0 1px 2px rgba(16,16,20,.04);align-items:center}
+.voicebtn{display:inline-flex;width:auto;max-width:100%;min-width:0;height:auto;padding:7px 14px 7px 7px;gap:9px;border:1px solid var(--line);border-radius:999px;background:var(--card);margin:0 0 20px;box-shadow:0 1px 2px rgba(16,16,20,.04);align-items:center;text-align:left}
 .voicebtn .av{width:26px;height:26px;font-size:0;border-radius:50%;background:linear-gradient(135deg,#6366f1,#ec4899)!important;display:grid;place-items:center;color:#fff;flex:none}
 .voicebtn .av svg{width:14px;height:14px}
 .voicebtn .lbl,.voicebtn .nm small,.voicebtn>span[data-ic="chev"]{display:none}
@@ -342,13 +358,13 @@ details p{margin:8px 0 0;color:var(--muted);font-size:14px}
   <div class="page">
     <button class="voicebtn" id="openVoices">
       <span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></span>
-      <span class="nm"><b id="vbName">Bunty - Funny Best Friend</b></span>
+      <span class="nm"><b id="vbName">Select a Voice</b></span>
     </button>
 
     <div class="edcard">
       <div class="editor">
         <div class="hl" id="hl"></div>
-        <textarea id="script" spellcheck="false" placeholder="Write or paste your script here…">[excited]</textarea>
+        <textarea id="script" spellcheck="false" placeholder="Write or paste your script here…"></textarea>
       </div>
     </div>
     
@@ -356,7 +372,7 @@ details p{margin:8px 0 0;color:var(--muted);font-size:14px}
     
     <button class="addchar" id="addChar">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-      <span>वक्ता जोड़ें</span>
+      <span>Add Speaker</span>
     </button>
   </div>
 
@@ -372,7 +388,7 @@ details p{margin:8px 0 0;color:var(--muted);font-size:14px}
           <div class="atgroup">
             <button class="atb" id="autoTag">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>
-              <span>ऑटो-टैग</span>
+              <span>Auto tag</span>
             </button>
             <button class="atd" id="atDrop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
           </div>
@@ -384,11 +400,10 @@ details p{margin:8px 0 0;color:var(--muted);font-size:14px}
         </div>
       </div>
       
-      <button id="gen">स्पीच उत्पन्न करें</button>
+      <button id="gen">Generate speech</button>
       <button id="stop" class="hidden">Stop</button>
 
       <div class="fstats">
-        <!-- Unlimited Limit, No Credit Ring -->
         <span id="charCount">0</span>
       </div>
     </div>
@@ -494,15 +509,22 @@ $("atRemove").onclick = () => {
   atMenu.classList.remove("show");
 };
 
-// Fake Generation
+// Generation logic (Check missing Voice & API Key)
 $("gen").onclick = () => {
   if (!script.value.trim()) {
     showToast("Write something first!");
     return;
   }
+  if ($("vbName").textContent === "Select a Voice") {
+    showToast("Choose a voice first!");
+    $("voiceW").classList.add("show");
+    return;
+  }
+  
+  // Fake generation to show it works
   $("gen").classList.add("hidden");
   $("stop").classList.remove("hidden");
-  showToast("Generating...");
+  showToast("Generating speech...");
   
   setTimeout(() => {
     $("stop").classList.add("hidden");
@@ -518,11 +540,28 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove("show"), 2500);
 }
 
-// Modals
+// Modals & Options
 $("openVoices").onclick = () => $("voiceW").classList.add("show");
 $("openHistory").onclick = () => $("histW").classList.add("show");
 $("clearBtn").onclick = () => { script.value = ""; updateHL(); showToast("Cleared"); };
 $("openSettings").onclick = () => showToast("Settings feature opened");
+$("addChar").onclick = () => showToast("Adding character...");
+
+// Voice Selection Logic
+document.querySelectorAll(".vrow").forEach(row => {
+  row.onclick = () => {
+    // Remove check from others
+    document.querySelectorAll(".vrow .chk").forEach(c => c.remove());
+    // Add check to current
+    row.insertAdjacentHTML('beforeend', '<div class="chk">✓</div>');
+    // Update Header Text
+    const voiceName = row.querySelector(".vt b").textContent;
+    $("vbName").textContent = voiceName;
+    // Close Modal
+    $("voiceW").classList.remove("show");
+    showToast("Voice selected: " + voiceName);
+  };
+});
 </script>
 </body>
-</html>
+  </html>
